@@ -25,3 +25,9 @@ def test_post_exist_key(client, data):
     response = client.post("/dictionary", json={"key": "mail.ru", "value": "pretty"})
     assert response.status_code == 409
     assert response.data.decode("utf-8") == "409 Conflict: Key already exists"
+
+# check if request is not a json
+def test_post_not_json(client, data):
+    response = client.post("/dictionary", data={"key": "mail.ru", "value": "pretty"})
+    assert response.status_code == 400
+    assert response.data.decode("utf-8") == "400 Bad Request: Wrong json"

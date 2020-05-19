@@ -25,3 +25,10 @@ def test_put_more_args(client, data):
     response = client.put("/dictionary/mail.ru", json={"key": "mail.ru", "wrong": "mail.ru", "value": "awesome"})
     assert response.status_code == 400
     assert response.data.decode("utf-8") == "400 Bad Request: Missing param or too much params"
+
+
+# check if request is not a json
+def test_put_not_json(client, data):
+    response = client.put("/dictionary/mail.ru", data={"key": "mail.ru", "value": "pretty"})
+    assert response.status_code == 400
+    assert response.data.decode("utf-8") == "400 Bad Request: Wrong json"

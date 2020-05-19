@@ -9,7 +9,17 @@ m_dict = {}
 
 @app.route('/dictionary', methods=['POST'])
 def post_key():
-    if "key" in request.json and "value" in request.json and len(request.json) == 2:
+    # check if request is not a json or incorrect json
+    if request.json is None:
+        response = make_response(
+            (
+                '400 Bad Request: Wrong json',
+                400
+            )
+        )
+        return response
+
+    elif "key" in request.json and "value" in request.json and len(request.json) == 2:
         data = request.json
         if data['key'] not in m_dict:
             key = data['key']
@@ -45,7 +55,15 @@ def post_key():
 
 @app.route('/dictionary/<key>', methods=['PUT'])
 def put_key(key):
-    if "key" in request.json and "value" in request.json and len(request.json) == 2:
+    if request.json is None:
+        response = make_response(
+            (
+                '400 Bad Request: Wrong json',
+                400
+            )
+        )
+        return response
+    elif "key" in request.json and "value" in request.json and len(request.json) == 2:
         data = request.json
         if key in m_dict:
             m_dict[key] = data['value']
